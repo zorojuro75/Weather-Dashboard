@@ -13,3 +13,11 @@
   <li>getTemp.php - Gets the latest temperature from the database</li>
   <li>dummy.php - Inserts dummy data into the database</li>
 </ul>
+
+# Requirements
+
+<ul>
+  <li>PHP 7.0 or higher</li>
+  <li>MySQL</li>
+  <li>Chart.js for gauge chart</li>
+</ul>
