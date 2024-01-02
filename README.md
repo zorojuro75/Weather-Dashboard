@@ -14,7 +14,7 @@
   <li>dummy.php - Inserts dummy data into the database</li>
 </ul>
 
-# Requirements
+## Requirements
 
 <ul>
   <li>PHP 7.0 or higher</li>
