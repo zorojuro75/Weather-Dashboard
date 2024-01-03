@@ -59,6 +59,10 @@ include 'getTemp.php';
             <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Temperature</div>
             <canvas id="tempGauge"></canvas>
         </div>
+        <div class="w-[500px] h-[300px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
+            <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Soil Moisture VS Humadity</div>
+            <canvas id="scatter"></canvas>
+        </div>
     </div>
 
     <script>
@@ -91,6 +95,40 @@ include 'getTemp.php';
         };
         var chart = new Chart(ctx, config);
 
+        var rainfallData = [1, 2, 3, 4];
+        var soilMoistureData = [10, 20, 30, 40];
+        var dataPoints = [];
+        for (var i = 0; i < rainfallData.length; i++) {
+            var dataPoint = {
+                x: rainfallData[i],
+                y: soilMoistureData[i] 
+            };
+            dataPoints.push(dataPoint);
+        }
+        var ctx2 = document.getElementById('scatter').getContext('2d');
+        var config2 = {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Humidity vs Soil Moisture',
+                    data: dataPoints,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ]
+                }]
+            },
+        };
+        var scatter = new Chart(ctx2, config2);
         setInterval(function() {
             <?php
             insertDummyData($db);
