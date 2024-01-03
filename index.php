@@ -22,36 +22,45 @@ include 'getSoilMoisture.php';
 
 <body class="bg-gray-600 flex">
 
-    <div class="sidebar w-[15%] h-screen py-5 bg-gray-800 text-white text-xl flex flex-col gap-5 pl-10">
-        <div class="flex gap-2 items-center">
-            <img src="icons/dashboard.png" alt="" class="h-6 w-6">
-            <span>
-                Dashboard
+    <div class="sidebar w-[15%] h-screen py-5 bg-gray-800 text-white text-xl flex flex-col gap-16 pl-10">
+        <div class="text-4xl">
+            <span class="bg-gradient-to-r from-blue-500 to-red-500 text-transparent bg-clip-text">
+                Weather App
             </span>
         </div>
-        <div class="flex gap-2 items-center">
-            <img src="icons/dashboard.png" alt="" class="h-6 w-6">
-            <span>
-                Temperature
-            </span>
-        </div>
-        <div class="flex gap-2 items-center">
-            <img src="icons/dashboard.png" alt="" class="h-6 w-6">
-            <span>
-                Humadity
-            </span>
-        </div>
-        <div class="flex gap-2 items-center">
-            <img src="icons/dashboard.png" alt="" class="h-6 w-6">
-            <span>
-                Settings
-            </span>
-        </div>
-        <div class="flex gap-2 items-center">
-            <img src="icons/dashboard.png" alt="" class="h-6 w-6">
-            <span>
-                Dark Mode
-            </span>
+
+
+        <div class='flex flex-col gap-5'>
+            <div class="flex gap-2 items-center">
+                <img src="icons/dashboard.png" alt="" class="h-6 w-6">
+                <span>
+                    Dashboard
+                </span>
+            </div>
+            <div class="flex gap-2 items-center">
+                <img src="icons/temperature.png" alt="" class="h-6 w-6">
+                <span>
+                    Temperature
+                </span>
+            </div>
+            <div class="flex gap-2 items-center">
+                <img src="icons/humidity.png" alt="" class="h-6 w-6">
+                <span>
+                    Humidity
+                </span>
+            </div>
+            <div class="flex gap-2 items-center">
+                <img src="icons/setting.png" alt="" class="h-6 w-6">
+                <span>
+                    Settings
+                </span>
+            </div>
+            <div class="flex gap-2 items-center">
+                <img src="icons/dark-mode.png" alt="" class="h-6 w-6">
+                <span>
+                    Dark Mode
+                </span>
+            </div>
         </div>
     </div>
     <div class="main">
