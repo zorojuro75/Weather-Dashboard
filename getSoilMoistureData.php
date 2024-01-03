@@ -1,9 +1,5 @@
 <?php
-
-// Connect to database 
 include 'connection.php';
-
-// Get soil moisture data
 function getMoistureData($db) {
 
   $sql = "SELECT moisture_percent, reading_time  

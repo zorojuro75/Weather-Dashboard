@@ -6,6 +6,7 @@ include 'getTemp.php';
 include 'getHumidity.php';
 include 'getSoilMoisture.php';
 include 'getSoilMoistureData.php';
+include 'getNutrient.php';
 
 $result = getMoistureData($db);
 
@@ -37,41 +38,30 @@ $timeData = json_encode($result['timeData']);
                 Weather App
             </span>
         </div>
-
-
         <div class='flex flex-col gap-5'>
-            <div class="flex gap-2 items-center">
+            <a href="/Weather%20Dashboard" class="flex gap-2 items-center">
                 <img src="icons/dashboard.png" alt="" class="h-6 w-6">
-                <span>
-                    Dashboard
-                </span>
-            </div>
-            <div class="flex gap-2 items-center">
+                Dashboard
+            </a>
+            <a href="" class="flex gap-2 items-center text-gray-500">
                 <img src="icons/temperature.png" alt="" class="h-6 w-6">
-                <span>
-                    Temperature
-                </span>
-            </div>
-            <div class="flex gap-2 items-center">
+                Temperature
+            </a>
+            <a href="" class="flex gap-2 items-center text-gray-500">
                 <img src="icons/humidity.png" alt="" class="h-6 w-6">
-                <span>
-                    Humidity
-                </span>
-            </div>
-            <div class="flex gap-2 items-center">
+                Humidity
+            </a>
+            <a href="" class="flex gap-2 items-center text-gray-500">
                 <img src="icons/setting.png" alt="" class="h-6 w-6">
-                <span>
-                    Settings
-                </span>
-            </div>
-            <div class="flex gap-2 items-center">
+                Settings
+            </a>
+            <a href="" class="flex gap-2 items-center text-gray-500">
                 <img src="icons/dark-mode.png" alt="" class="h-6 w-6">
-                <span>
-                    Dark Mode
-                </span>
-            </div>
+                Dark Mode
+            </a>
         </div>
     </div>
+
     <div class="main">
         <div class="twoAndOne flex">
             <div class="two">
@@ -90,9 +80,12 @@ $timeData = json_encode($result['timeData']);
                 </div>
             </div>
         </div>
-        <div>
-            <div class="w-[1540px] h-[340px] bg-gray-800 mx-5 rounded p-2">
+        <div class="three flex gap-5">
+            <div class="w-[750px] h-[300px] bg-gray-800 mx-5 rounded p-2">
                 <canvas id="bar"></canvas>
+            </div>
+            <div class="w-[750px] h-[300px] bg-gray-800 mx-5 rounded p-2">
+                <canvas id="pie"></canvas>
             </div>
         </div>
 
@@ -100,6 +93,30 @@ $timeData = json_encode($result['timeData']);
     </div>
 
     <script>
+        var nutrientChart = new Chart(document.getElementById('bar'), {
+            type: 'bar',
+            data: {
+                labels: ['Nitrogen', 'Phosphorus', 'Potassium'],
+                datasets: [{
+                    label: 'Nutrient PPM levels by nutrient type',
+                    data: [<?php echo $nitrogenPPM; ?>,
+                        <?php echo $phosphorusPPM; ?>,
+                        <?php echo $potassiumPPM; ?>
+                    ],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, .5)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
         var moistureData = <?php echo $moistureData; ?>;
         var timeData = <?php echo $timeData; ?>;
 
@@ -112,29 +129,6 @@ $timeData = json_encode($result['timeData']);
                     label: 'Soil Moisture',
                     data: moistureData,
                 }]
-            }
-        });
-        var ctx = document.getElementById('bar').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: timeData,
-                datasets: [{
-                    label: 'Soil Moisture',
-                    data: moistureData,
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1 
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true 
-                    }
-                }
             }
         });
 
@@ -173,7 +167,7 @@ $timeData = json_encode($result['timeData']);
             insertDummyData($db);
             ?>
             location.reload();
-        }, 5000);
+        }, 500000);
     </script>
 
 </body>
