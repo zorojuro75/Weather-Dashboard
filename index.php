@@ -3,7 +3,8 @@
 include 'dummy.php';
 include 'connection.php';
 include 'getTemp.php';
-
+include 'getHumidity.php';
+include 'getSoilMoisture.php';
 ?>
 
 <!DOCTYPE html>
@@ -95,13 +96,13 @@ include 'getTemp.php';
         };
         var chart = new Chart(ctx, config);
 
-        var rainfallData = [1, 2, 3, 4];
-        var soilMoistureData = [10, 20, 30, 40];
+        var Humidity = <?php echo $humidityJSON; ?>;
+        var soilMoistureData = <?php echo $moistureJSON; ?>;
         var dataPoints = [];
-        for (var i = 0; i < rainfallData.length; i++) {
+        for (var i = 0; i < Humidity.length; i++) {
             var dataPoint = {
-                x: rainfallData[i],
-                y: soilMoistureData[i] 
+                x: parseFloat(Humidity[i]),
+                y: parseFloat(soilMoistureData[i])
             };
             dataPoints.push(dataPoint);
         }
@@ -112,21 +113,9 @@ include 'getTemp.php';
                 datasets: [{
                     label: 'Humidity vs Soil Moisture',
                     data: dataPoints,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                    ]
+                    backgroundColor: 'rgb(255, 99, 132)'
                 }]
-            },
+            }
         };
         var scatter = new Chart(ctx2, config2);
         setInterval(function() {
