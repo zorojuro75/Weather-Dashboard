@@ -17,6 +17,8 @@ include 'getSoilMoisture.php';
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
     <script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
+    <script src="raphael-2.1.4.min.js"></script>
+    <script src="justgage.js"></script>
 
 </head>
 
@@ -73,11 +75,22 @@ include 'getSoilMoisture.php';
             <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Soil Moisture VS Humadity</div>
             <canvas id="scatter"></canvas>
         </div>
+        <div class="w-[500px] h-[300px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
+            <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Just Gauge</div>
+            <div id="gauge" style="width:500px; height:280px"></div>
+        </div>
     </div>
 
     <script>
+        
         var temp = <?php echo getLatestTemperature($db); ?>;
-
+        var g = new JustGage({
+            id: "gauge",
+            value: temp,
+            min: 0,
+            max: 60,
+            title: "Temperature"
+        });
         var ctx = document.getElementById('tempGauge').getContext('2d');
         var config = {
             type: 'gauge',
