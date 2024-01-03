@@ -5,6 +5,13 @@ include 'connection.php';
 include 'getTemp.php';
 include 'getHumidity.php';
 include 'getSoilMoisture.php';
+include 'getSoilMoistureData.php';
+
+$result = getMoistureData($db);
+
+$moistureData = json_encode($result['moistureData']);
+$timeData = json_encode($result['timeData']);
+
 ?>
 
 <!DOCTYPE html>
@@ -66,23 +73,71 @@ include 'getSoilMoisture.php';
         </div>
     </div>
     <div class="main">
+        <div class="twoAndOne flex">
+            <div class="two">
+                <div class="w-[500px] h-[280px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
+                    <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Soil Moisture VS Humadity</div>
+                    <canvas id="scatter"></canvas>
+                </div>
+                <div class="w-[500px] h-[280px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
+                    <div id="gauge" class="w-[500px] h-[280px]"></div>
+                </div>
+            </div>
+            <div class="one">
+                <div class="w-[1000px] h-[580px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
+                    <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Soil Moisture Levels in Recent times</div>
+                    <canvas id="soil"></canvas>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="w-[1540px] h-[340px] bg-gray-800 mx-5 rounded p-2">
+                <canvas id="bar"></canvas>
+            </div>
+        </div>
 
-        <div class="w-[500px] h-[300px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
-            <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Temperature</div>
-            <canvas id="tempGauge"></canvas>
-        </div>
-        <div class="w-[500px] h-[300px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
-            <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Soil Moisture VS Humadity</div>
-            <canvas id="scatter"></canvas>
-        </div>
-        <div class="w-[500px] h-[300px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
-            <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Just Gauge</div>
-            <div id="gauge" style="width:500px; height:280px"></div>
-        </div>
+
     </div>
 
     <script>
-        
+        var moistureData = <?php echo $moistureData; ?>;
+        var timeData = <?php echo $timeData; ?>;
+
+        var ctx = document.getElementById('soil').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: timeData,
+                datasets: [{
+                    label: 'Soil Moisture',
+                    data: moistureData,
+                }]
+            }
+        });
+        var ctx = document.getElementById('bar').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: timeData,
+                datasets: [{
+                    label: 'Soil Moisture',
+                    data: moistureData,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1 
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true 
+                    }
+                }
+            }
+        });
+
         var temp = <?php echo getLatestTemperature($db); ?>;
         var g = new JustGage({
             id: "gauge",
@@ -91,33 +146,6 @@ include 'getSoilMoisture.php';
             max: 60,
             title: "Temperature"
         });
-        var ctx = document.getElementById('tempGauge').getContext('2d');
-        var config = {
-            type: 'gauge',
-            data: {
-                datasets: [{
-                    data: [5, 10, 15, 20, 25, 30, 35, 40],
-                    value: temp,
-                    backgroundColor: ['#f7b267', '#f79d65', '#f4845f', '#f27059', '#ef5953', '#ed434d', '#e92d47', '#e61741'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: 'Temperature in Celsius'
-                },
-                needle: {
-                    radiusPercentage: 2,
-                    widthPercentage: 3.2,
-                    lengthPercentage: 80,
-                    color: 'rgba(0, 0, 0, 1)'
-                },
-            }
-        };
-        var chart = new Chart(ctx, config);
-
         var Humidity = <?php echo $humidityJSON; ?>;
         var soilMoistureData = <?php echo $moistureJSON; ?>;
         var dataPoints = [];
@@ -145,7 +173,7 @@ include 'getSoilMoisture.php';
             insertDummyData($db);
             ?>
             location.reload();
-        }, 50000);
+        }, 5000);
     </script>
 
 </body>
