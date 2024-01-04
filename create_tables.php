@@ -60,8 +60,6 @@ if ($db->query($query) === TRUE) {
 } else {
   echo "Error creating Soil Moisture table: " . $db->error . "<br>"; 
 }
-
-// Soil Nutrients table
 $query = "CREATE TABLE SoilNutrients (
   id INT AUTO_INCREMENT PRIMARY KEY,
   sensor_id INT,

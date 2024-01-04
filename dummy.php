@@ -7,7 +7,6 @@ function insertDummyData($db)
     $temperatureC = rand(15, 20);
     $temperatureF = $temperatureC * 1.8 + 32;
     $humidity = rand(60, 80);
-    $pressure = rand(1005, 1015);
     $moisture = rand(10, 20);
     $nutrientTypes = array('N', 'P', 'K');
     $nutrientPPM = rand(80, 220);
@@ -18,10 +17,6 @@ function insertDummyData($db)
 
     // Insert into Humidity
     $query = "INSERT INTO Humidity VALUES (NULL, $sensorId, $humidity, NOW())";
-    $db->query($query);
-
-    // Insert into Pressure
-    $query = "INSERT INTO Pressure VALUES (NULL, $sensorId, $pressure, NOW())";
     $db->query($query);
 
     // Insert into Soil Moisture

@@ -2,7 +2,7 @@
 include 'connection.php';
 function getSoilMoisture($db)
 {
-    $sql = "SELECT moisture_percent FROM Soilmoisture ORDER BY reading_time DESC LIMIT 50";
+    $sql = "SELECT moisture_percent FROM SoilMoisture ORDER BY reading_time DESC LIMIT 50";
     $result = $db->query($sql);
 
     if ($result) {
@@ -15,3 +15,4 @@ function getSoilMoisture($db)
 }
 $moistureArray = getSoilMoisture($db);
 $moistureJSON = json_encode($moistureArray);
+$db->close();

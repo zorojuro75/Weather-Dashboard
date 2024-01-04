@@ -1,5 +1,4 @@
 <?php
-
 include 'dummy.php';
 include 'connection.php';
 include 'getTemp.php';
@@ -7,9 +6,7 @@ include 'getHumidity.php';
 include 'getSoilMoisture.php';
 include 'getSoilMoistureData.php';
 include 'getNutrient.php';
-
 $result = getMoistureData($db);
-
 $moistureData = json_encode($result['moistureData']);
 $timeData = json_encode($result['timeData']);
 
@@ -39,24 +36,24 @@ $timeData = json_encode($result['timeData']);
             </span>
         </div>
         <div class='flex flex-col gap-5'>
-            <a href="/Weather%20Dashboard" class="flex gap-2 items-center">
-                <img src="icons/dashboard.png" alt="" class="h-6 w-6">
+            <a href="/" class="flex gap-2 items-center">
+                <img src="https://weather-zorojuro75.000webhostapp.com/image/dashboard.png" alt="" class="h-6 w-6">
                 Dashboard
             </a>
             <a href="" class="flex gap-2 items-center text-gray-500">
-                <img src="icons/temperature.png" alt="" class="h-6 w-6">
+                <img src="https://weather-zorojuro75.000webhostapp.com/image/temperature.png" alt="" class="h-6 w-6">
                 Temperature
             </a>
             <a href="" class="flex gap-2 items-center text-gray-500">
-                <img src="icons/humidity.png" alt="" class="h-6 w-6">
+                <img src="https://weather-zorojuro75.000webhostapp.com/image/humidity.png" alt="" class="h-6 w-6">
                 Humidity
             </a>
             <a href="" class="flex gap-2 items-center text-gray-500">
-                <img src="icons/setting.png" alt="" class="h-6 w-6">
+                <img src="https://weather-zorojuro75.000webhostapp.com/image/setting.png" alt="" class="h-6 w-6">
                 Settings
             </a>
             <a href="" class="flex gap-2 items-center text-gray-500">
-                <img src="icons/dark-mode.png" alt="" class="h-6 w-6">
+                <img src="./image/dark-mode.png" alt="" class="h-6 w-6">
                 Dark Mode
             </a>
         </div>
@@ -75,17 +72,16 @@ $timeData = json_encode($result['timeData']);
             </div>
             <div class="one">
                 <div class="w-[1000px] h-[580px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
-                    <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Soil Moisture Levels in Recent times</div>
-                    <canvas id="soil"></canvas>
+                    <canvas id="pie"></canvas>
                 </div>
             </div>
         </div>
-        <div class="three flex gap-5">
-            <div class="w-[750px] h-[300px] bg-gray-800 mx-5 rounded p-2">
+        <div class="three flex">
+            <div class="w-[500px] h-[320px] bg-gray-800 mx-5 rounded p-2">
                 <canvas id="bar"></canvas>
             </div>
-            <div class="w-[750px] h-[300px] bg-gray-800 mx-5 rounded p-2">
-                <canvas id="pie"></canvas>
+            <div class="w-[1000px] h-[320px] bg-gray-800 mx-5 rounded p-2">
+                <canvas id="soil"></canvas>
             </div>
         </div>
 
@@ -129,9 +125,17 @@ $timeData = json_encode($result['timeData']);
                     label: 'Soil Moisture',
                     data: moistureData,
                 }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
-
         var temp = <?php echo getLatestTemperature($db); ?>;
         var g = new JustGage({
             id: "gauge",
@@ -162,6 +166,52 @@ $timeData = json_encode($result['timeData']);
             }
         };
         var scatter = new Chart(ctx2, config2);
+
+        fetch('getHumidityOverTime.php')
+            .then(response => response.json())
+            .then(data => {
+                const dates = data.map(item => item.reading_time);
+                const humidityData = data.map(item => item.humidity_percent);
+
+                // Create area chart
+                const ctx = document.getElementById('pie').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: 'Humidity (%)',
+                            data: humidityData,
+                            fill: true,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Humidity (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
         setInterval(function() {
             <?php
             insertDummyData($db);
