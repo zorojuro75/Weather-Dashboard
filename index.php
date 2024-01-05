@@ -27,9 +27,12 @@ $timeData = json_encode($result['timeData']);
 
 </head>
 
-<body class="bg-gray-600 flex">
+<body class="bg-gray-600 lg:flex">
+<div class="bg-gradient-to-r from-blue-500 to-red-500 text-transparent bg-clip-text block lg:hidden text-center text-7xl font-bold">
+                Weather App
+            </div>
 
-    <div class="sidebar w-[15%] h-screen py-5 bg-gray-800 text-white text-xl flex flex-col gap-16 pl-10">
+    <div class="w-[15%] md:h-screen py-5 bg-gray-800 text-white text-xl hidden lg:flex flex-col gap-16 pl-10">
         <div class="text-4xl">
             <span class="bg-gradient-to-r from-blue-500 to-red-500 text-transparent bg-clip-text">
                 Weather App
@@ -60,27 +63,27 @@ $timeData = json_encode($result['timeData']);
     </div>
 
     <div class="main">
-        <div class="twoAndOne flex">
-            <div class="two">
-                <div class="w-[500px] h-[280px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
+        <div class="lg:flex">
+            <div>
+                <div class="lg:w-[500px] w-full lg:h-[280px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
                     <div class='text-white text-center font-bold text-xl border-b border-gray-400 py-2'>Soil Moisture VS Humadity</div>
                     <canvas id="scatter"></canvas>
                 </div>
-                <div class="w-[500px] h-[280px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
-                    <div id="gauge" class="w-[500px] h-[280px]"></div>
+                <div class="lg:w-[500px] w-full lg:h-[280px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2 flex items-center justify-center">
+                    <div id="gauge" class="lg:w-[500px] lg:h-[280px] w-full h-[600px]"></div>
                 </div>
             </div>
-            <div class="one">
-                <div class="w-[1000px] h-[580px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
+            <div>
+                <div class="lg:w-[1000px] w-full lg:h-[580px] h-[700px] bg-gray-800 m-5 rounded-lg shadow-2xl px-2">
                     <canvas id="pie"></canvas>
                 </div>
             </div>
         </div>
-        <div class="three flex">
-            <div class="w-[500px] h-[320px] bg-gray-800 mx-5 rounded p-2">
+        <div class="flex flex-col lg:flex-row gap-5 lg:gap-0">
+            <div class="lg:w-[500px] w-full lg:h-[320px] h-[600px] bg-gray-800 mx-5 rounded p-2">
                 <canvas id="bar"></canvas>
             </div>
-            <div class="w-[1000px] h-[320px] bg-gray-800 mx-5 rounded p-2">
+            <div class="lg:w-[1000px] w-full lg:h-[320px] h-[600px] bg-gray-800 mx-5 rounded p-2">
                 <canvas id="soil"></canvas>
             </div>
         </div>
@@ -163,6 +166,9 @@ $timeData = json_encode($result['timeData']);
                     data: dataPoints,
                     backgroundColor: 'rgb(255, 99, 132)'
                 }]
+            },
+            options: {
+                responsive: true,
             }
         };
         var scatter = new Chart(ctx2, config2);
@@ -217,7 +223,7 @@ $timeData = json_encode($result['timeData']);
             insertDummyData($db);
             ?>
             location.reload();
-        }, 500000);
+        }, 30000);
     </script>
 
 </body>
