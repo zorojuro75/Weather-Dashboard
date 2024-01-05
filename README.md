@@ -12,6 +12,7 @@ The project contains the following files:
 - `getHumidity.php` - Gets the latest humidity reading
 - `getPressure.php` - Gets the latest pressure reading
 - `getSoilMoisture.php` - Gets the latest soil moisture reading
+- `getSoilMoistureData.php` - Gets the latest soil moisture reading and time
 - `getSoilNutrients.php` - Gets the latest soil nutrient (N,P,K) readings
 - `dummy.php` - Inserts dummy data into the database for testing
 
@@ -19,11 +20,18 @@ Real-time sensor data is collected using Arduino and sent to the MySQL database.
 
 ## Features
 
-- Real-time temperature, humidity, pressure, soil moisture, and soil nutrient data
-- Gauge charts for temperature, humidity, pressure, and soil moisture
+- Real-time temperature, humidity, soil moisture, and soil nutrient data
+- Gauge chart for temperature
+- Line chart soil moisture over time
+- Area chart for humidity over time
+- Bar chart to show Nutrients PPM levels by Nutrients type
+- Scatter diagram to show the relationship between humidity and soil moisture.
 - Responsive design
 - Auto-refreshes charts with new data every 30 seconds
 - Fetches latest data from MySQL database
+
+**As all the data here is auto generated and dummy that's why the relationship between data and their trends is not perfect.**
+
 ## Requirements
 
 - PHP 7.0 or higher
